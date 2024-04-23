@@ -19,7 +19,18 @@ class Ball {
 
     update(points, origin) {
         this.newPoints = offsetPoints(points, origin)
-        this.segments = segmentsFromPoints(this.newPoints)
+        this.segments = this.segmentsFromPoints(this.newPoints)
+    }
+
+    segmentsFromPoints(points) {
+        const center = [this.x + this.w / 2, this.y + this.h / 2]
+        const segments = []
+        for (let i = 0; i < points.length; i++) {
+            const p = points[i]
+            segments.push([center, p]) 
+        }
+
+        return segments
     }
 
     fire() {

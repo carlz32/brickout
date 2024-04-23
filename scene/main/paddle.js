@@ -15,7 +15,7 @@ class Paddle {
         })
     }
 
-    move(x) {
+    #move(x) {
         if (x < 0) {
             x = 0
         }
@@ -36,11 +36,11 @@ class Paddle {
     }
 
     moveLeft() {
-        this.move(this.x - this.speed)
+        this.#move(this.x - this.speed)
     }
 
     moveRight() {
-        this.move(this.x + this.speed)
+        this.#move(this.x + this.speed)
     }
 
     collide(ball) {
@@ -52,8 +52,8 @@ class Paddle {
             for (let j = 0; j < ball.segments.length; j++) {
                 const b = ball.segments[j]
                 if (calcIntersection(p[0], p[1], b[0], b[1])) {
-                    return i                    
-                }
+                return i                    
+            }
             }
         }
         return -1

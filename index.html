@@ -22,8 +22,13 @@
             <label for="id-fps">FPS</label>
             <input type="range" id="id-fps" min="1" value="50"/>
         </div>
-        <div>
-            <img src="img/element_purple_rectangle.png" alt="purple rectangle">
+        <div id="level-editor">
+            <img id="brick01" src="img/element_purple_rectangle.png" alt="purple rectangle">
+            <img id="brick02" src="img/element_blue_rectangle.png" alt="blue rectangle">
+            <img id="brick03" src="img/element_green_rectangle.png" alt="green rectangle">
+            <img id="brick04" src="img/element_red_rectangle.png" alt="red rectangle">
+            <img id="brick05" src="img/element_grey_rectangle.png" alt="grey rectangle">
+            <img id="birck06" src="img/element_yellow_rectangle.png" alt="yellow rectangle">
         </div>
         <!-- game -->
         <script src="./game/utils.js"></script>
@@ -39,6 +44,13 @@
         <!-- main -->
         <script src="./main.js"></script>
 
+        <script>
+            const editor = e('#level-editor')
+            editor.addEventListener('click', event => {
+                log(event.target)
+                game.drawElement(event.target)
+            })
+        </script>
         <script>
             // image outline
             function imageOutlinePoints() {

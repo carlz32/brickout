@@ -7,7 +7,7 @@ Destory the bricks by hitting them with the balls
 -   game folder
     -   provides basic facilities
         -   [x] **load images**
-            -   image's outline
+            -   image's vertices
         -   [x] **drawing capabilities**
             -   [x] draw Image
             -   [x] draw Text

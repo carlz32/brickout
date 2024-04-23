@@ -1,7 +1,7 @@
 class Brick {
     constructor(game) {
         this.game = game
-        const { image, points, w, h } = game.imageByName('brick')
+        const { image, points, w, h } = game.imageByName('brick01')
         this.image = image
         this.w = w
         this.h = h

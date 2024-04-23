@@ -33,8 +33,28 @@ const __main = function () {
             path: 'img/ballBlue.png',
             points: ballPoints,
         },
-        brick: {
+        brick01: {
             path: 'img/element_purple_rectangle.png',
+            points: brickPoints,
+        },
+        brick02: {
+            path: 'img/element_blue_rectangle.png',
+            points: brickPoints,
+        },
+        brick03: {
+            path: 'img/element_green_rectangle.png',
+            points: brickPoints,
+        },
+        brick04: {
+            path: 'img/element_red_rectangle.png',
+            points: brickPoints,
+        },
+        brick05: {
+            path: 'img/element_grey_rectangle.png',
+            points: brickPoints,
+        },
+        brick06: {
+            path: 'img/element_yellow_rectangle.png',
             points: brickPoints,
         },
         paddle: {
@@ -47,7 +67,7 @@ const __main = function () {
     // likewise, the Game class also needs a Scene instance to initialize
     // So here, we use a callback function, when the Game instance finished it's asynchronous things,
     // call the callback function, then Scene is prepared and signed to Game.
-    const game = new Game(30, images, (g) => {
+    game = new Game(30, images, (g) => {
         const scene = new SceneStart(g)
         g.runWithScene(scene)
     })
