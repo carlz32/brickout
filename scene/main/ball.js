@@ -1,7 +1,7 @@
 class Ball {
 	constructor(game) {
 		this.game = game
-		const { image, points, w, h } = game.imageByName("ball")
+		const { image, vertices, w, h } = game.imageByName("ball")
 		this.image = image
 		this.w = w
 		this.h = h
@@ -11,8 +11,8 @@ class Ball {
 		this.speedX = 10
 		this.speedY = -10
 		this.fired = false
-		this.relativePoints = points
-		this.update(this.relativePoints, {
+		this.vertices = vertices
+		this.update(this.vertices, {
 			x: this.x,
 			y: this.y,
 		})
@@ -50,7 +50,7 @@ class Ball {
 			this.x += this.speedX
 			this.y += this.speedY
 		}
-		this.update(this.relativePoints, {
+		this.update(this.vertices, {
 			x: this.x,
 			y: this.y,
 		})

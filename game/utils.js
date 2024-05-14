@@ -55,6 +55,12 @@ function magnitude(v) {
 	return Math.hypot(v[0], v[1])
 }
 
+function squaredDis(p1, p2) {
+	const x = p1[0] - p2[0]
+	const y = p1[1] - p2[1]
+	return x * x + y * y
+}
+
 function normalize(v) {
 	return [v[0] / magnitude(v), v[1] / magnitude(v)]
 }
@@ -78,19 +84,6 @@ function setContextFont(context, style) {
 	context.textBaseline = style.textBaseline
 }
 
-function intersectAABBs(box1, box2) {
-	return (
-		box1.x < box2.x + box2.w &&
-		box1.x + box1.w > box2.x &&
-		box1.y < box2.y + box2.h &&
-		box1.y + box1.h > box2.y
-	)
-}
-
-function intersectCircles(circle1, circle2) {
-	const distance = magnitude(subtract(circle1.center, circle2.center))
-	return distance < circle1.radius + circle2.radius
-}
 
 class Vector2d {
 	constructor(x, y) {

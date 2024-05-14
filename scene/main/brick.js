@@ -1,16 +1,16 @@
 class Brick {
 	constructor(game) {
 		this.game = game
-		const { image, points, w, h } = game.imageByName("brick01")
+		const { image, vertices, w, h } = game.imageByName("brick01")
 		this.image = image
 		this.w = w
 		this.h = h
 		this.x = 20
 		this.y = 20
-		this.relativePoints = points
+		this.vertices = vertices
 		this.lifes = 2
 
-		this.update(this.relativePoints, {
+		this.update(this.vertices, {
 			x: this.x,
 			y: this.y,
 		})

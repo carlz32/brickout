@@ -47,7 +47,7 @@ class Game {
 
 	drawText(str) {
 		const { context } = this
-		// text object which contains x, y, contesnts, font, size, color, textAlign, textBaseline config
+		// text object which contains x, y, contents, font, size, color, textAlign, textBaseline config
 		const defaultConfig = {
 			x: 0,
 			y: 0,
@@ -179,10 +179,10 @@ class Game {
 	}
 
 	imageByName(name) {
-		const { img, points } = this.images[name]
+		const { img, vertices } = this.images[name]
 		const image = {
 			image: img,
-			points: points,
+			vertices: vertices,
 			w: img.width,
 			h: img.height,
 		}
