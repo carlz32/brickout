@@ -1,8 +1,6 @@
 const e = (el) => document.querySelector(el)
 
-const log = (args) => {
-	console.log(args)
-}
+const log = console.log.bind(this)
 
 const imageFromPath = (path) => {
 	const img = new Image()
@@ -13,14 +11,6 @@ const imageFromPath = (path) => {
 function transformVertices(vertices, origin) {
 	const { x, y } = origin
 	return vertices.map((p) => [p[0] + x, p[1] + y])
-}
-
-function segmentsFromVertices(points) {
-	const segments = []
-	for (let i = 0; i < points.length; i++) {
-		segments.push([points[i], points[(i + 1) % points.length]])
-	}
-	return segments
 }
 
 function calcIntersection(A, B, C, D) {

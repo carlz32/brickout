@@ -5,33 +5,20 @@ class Ball {
 		this.image = image
 		this.w = w
 		this.h = h
-		this.radius = w / 2
 		this.x = (game.w - this.w) / 2
 		this.y = 500
 		this.speedX = 10
 		this.speedY = -10
 		this.fired = false
 		this.vertices = vertices
-		this.update(this.vertices, {
-			x: this.x,
-			y: this.y,
-		})
+		this.center = [this.x + this.w / 2, this.y + this.h / 2]
+		this.radius = w / 2
+		this.update()
 	}
 
-	update(points, origin) {
-		this.newPoints = transformVertices(points, origin)
-		this.segments = this.segmentsFromVertices(this.newPoints)
-	}
-
-	segmentsFromVertices(points) {
-		const center = [this.x + this.w / 2, this.y + this.h / 2]
-		const segments = []
-		for (let i = 0; i < points.length; i++) {
-			const p = points[i]
-			segments.push([center, p])
-		}
-
-		return segments
+	update() {
+		this.center = [this.x + this.w / 2, this.y + this.h / 2]
+		this.transformedVertices = transformVertices(this.vertices, { x: this.x, y: this.y })
 	}
 
 	fire() {
@@ -50,9 +37,6 @@ class Ball {
 			this.x += this.speedX
 			this.y += this.speedY
 		}
-		this.update(this.vertices, {
-			x: this.x,
-			y: this.y,
-		})
+		this.update()
 	}
 }

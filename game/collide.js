@@ -12,47 +12,33 @@ function intersectCircles(circle1, circle2) {
 	return distance < circle1.radius + circle2.radius
 }
 
-function intersectCirclePolygon(circle, polygon) {
-	const vertices = polygon.vertices
-
+function intersectCirclePolygon(circle, vertices) {
+	const axies = calcCirclePolygonAxises(circle.center, vertices)
 	let normal = [0, 0]
-	let depth = Number.Infinity
-	for (let i = 0; i < vertices.length; i++) {
-		const va = vertices[i]
-		const vb = vertices[(i + 1) % vertices.length]
-
-		const edge = subtract(vb - va)
-		const axis = [-edge[1], edge[0]]
-
+	let depth = Number.POSITIVE_INFINITY
+	for (let i = 0; i < axies.length; i++) {
+		const axis = axies[i]
+		
 		const { max: maxA, min: minA } = projectCircle(circle, axis)
 		const { max: maxB, min: minB } = projectVertices(vertices, axis)
-
+		
 		if (minA >= maxB || minB >= maxA) {
 			return false
 		}
 
 		const axisDepth = Math.min(maxB - minA, maxA - minB)
+		
 		if (axisDepth < depth) {
 			depth = axisDepth
 			normal = normalize(axis)
 		}
 	}
 
-	const center = circle.center
-	const cpIndex = findNearestPoint(center, vertices)
-	const cpVertice = vertices[cpIndex]
-	const axis = subtract(cpVertice, center)
-	// TODO: refactor
-	const { max: maxA, min: minA } = projectCircle(circle, axis)
-	const { max: maxB, min: minB } = projectVertices(vertices, axis)
-	if (minA >= maxB || minB >= maxA) {
-		return false
-	}
+	const arithmeticCenter = findArithmeticMean(vertices)
+	const direction = subtract(circle.center, arithmeticCenter)
 
-	const axisDepth = Math.min(maxB - minA, maxA - minB)
-	if (axisDepth < depth) {
-		depth = axisDepth
-		normal = normalize(axis)
+	if (dot(direction, normal) < 0) {
+		normal = scale(normal, -1)
 	}
 
 	return {
@@ -61,32 +47,60 @@ function intersectCirclePolygon(circle, polygon) {
 	}
 }
 
+function findArithmeticMean(vertices) {
+	const sum = [0, 0]
+	const len = vertices.length
+	for (let i = 0; i < len; i++) {
+		const v = vertices[i]
+		sum[0] += v[0]	
+		sum[1] += v[1]	
+	}
+	
+	return [sum[0] / len, sum[1] / len] 
+}
+
+function calcCirclePolygonAxises(center, vertices) {
+	const axises = []
+	for (let i = 0; i < vertices.length; i++) {
+		const va = vertices[i]
+		const vb = vertices[(i + 1) % vertices.length]
+		const edge = subtract(vb, va)
+		const axis = [-edge[1], edge[0]]
+		axises.push(axis)
+	}
+
+	const cp = findNearestPoint(center, vertices)
+	axises.push(cp)
+
+	return axises
+}
+
 function findNearestPoint(center, vertices) {
-	let minDis = Number.Infinity
+	let minDis = Number.POSITIVE_INFINITY
 	let index = -1
 	for (let i = 0; i < vertices.length; i++) {
 		const v = vertices[i]
-		const dis = findNearestPoint(center, v)
+		const dis = squaredDis(center, v)
 		if (dis < minDis) {
 			minDis = dis
 			index = i
 		}
 	}
-
-	return index
+	return vertices[index]
 }
 
 function projectCircle(circle, axis) {
 	const center = circle.center
 	const radius = circle.radius
 	const direction = normalize(axis)
-
+	
 	const p1 = add(center, scale(direction, radius))
 	const p2 = subtract(center, scale(direction, radius))
+	
 
-	const min = dot(p1, axis)
-	const max = dot(p2, axis)
-
+	const min = dot(p1, direction)
+	const max = dot(p2, direction)
+	
 	if (min > max) {
 		return {
 			min: max,
@@ -102,8 +116,8 @@ function projectCircle(circle, axis) {
 
 function projectVertices(vertices, axis) {
 	const direction = normalize(axis)
-	let min = Number.Infinity
-	let max = -Number.Infinity
+	let min = Number.POSITIVE_INFINITY
+	let max = Number.NEGATIVE_INFINITY
 	for (let i = 0; i < vertices.length; i++) {
 		const point = vertices[i]
 		const l = dot(point, direction)

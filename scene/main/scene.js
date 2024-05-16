@@ -36,39 +36,36 @@ class SceneMain extends GameScene {
 			const ball = balls[x]
 			ball.move()
 
-			const i = paddle.collide(ball)
+			let res = paddle.collide(ball)
+			if (res) this.handleReflection(ball, res)
+
 			// If the collided segment's index is one of 0, 2, 3, 4, 5, 7, 8, 9, the ball will be accelerated,
 			// and 3, 4, 8, 9's reflection is different
 			// arc part
-			if ([3, 4, 8, 9].includes(i)) {
-				log("reflect [3, 4, 8, 9]")
-				const unitSegVector = this.unitSegVector(paddle.segments[i])
+			// if ([3, 4, 8, 9].includes(i)) {
+			// 	log("reflect [3, 4, 8, 9]")
+			// 	const unitSegVector = this.unitSegVector(paddle.segments[i])
 
-				const newSpeed = this.newBallSpeed(ball, unitSegVector)
-				ball.speedX = newSpeed[0]
-				ball.speedY = newSpeed[1]
-			}
+			// 	const newSpeed = this.newBallSpeed(ball, unitSegVector)
+			// 	ball.speedX = newSpeed[0]
+			// 	ball.speedY = newSpeed[1]
+			// }
 
-			// line part
-			if ([0, 1, 2, 5, 6, 7].includes(i)) {
-				log("reflect [0, 1, 2, 5, 6, 7]")
-				ball.speedY *= -1
-			}
+			// // line part
+			// if ([0, 1, 2, 5, 6, 7].includes(i)) {
+			// 	log("reflect [0, 1, 2, 5, 6, 7]")
+			// 	ball.speedY *= -1
+			// }
 
-			// accelerate part
-			if ([0, 2, 3, 4, 5, 7, 8, 9].includes(i)) {
-				log("reflect [0, 2, 3, 4, 5, 7, 8, 9]")
-				ball.speedX *= 1.05
-				ball.speedY *= 1.05
-			}
+			// // accelerate part
+			// if ([0, 2, 3, 4, 5, 7, 8, 9].includes(i)) {
+			// 	log("reflect [0, 2, 3, 4, 5, 7, 8, 9]")
+			// 	ball.speedX *= 1.05
+			// 	ball.speedY *= 1.05
+			// }
 
-			const j = brick.collide(ball)
-			if ([0, 2].includes(j)) {
-				ball.speedY *= -1
-			}
-			if ([1, 3].includes(j)) {
-				ball.speedX *= -1
-			}
+			res = brick.collide(ball) 
+			if (res) this.handleReflection(ball, res)
 
 			if (ball.y > paddle.y + paddle.h) {
 				balls.splice(x, 1)
@@ -80,31 +77,26 @@ class SceneMain extends GameScene {
 		}
 	}
 
-	newBallSpeed(ball, unitSegVector) {
+	handleReflection(ball, { normal, depth }) {
+		// speed
 		const speedVector = [ball.speedX, ball.speedY]
-		const cos = dot(unitSegVector, speedVector)
-		const speedA = scale(unitSegVector, cos)
+		const project = dot(normal, speedVector)
+		const speedA = scale(normal, project)
 		const speedB = subtract(speedVector, speedA)
-		const newSpeed = add(speedA, scale(speedB, -1))
-
-		return newSpeed
-	}
-
-	unitSegVector(segment) {
-		const tail = segment[0]
-		const tip = segment[1]
-		const segVector = subtract(tip, tail)
-		const unitSegVector = normalize(segVector)
-
-		return unitSegVector
+		const newSpeed = add(speedB, scale(speedA, -1))
+		ball.speedX = newSpeed[0]
+		ball.speedY = newSpeed[1]
+		// location
+		const offset = scale(normal, depth)
+		;[ball.x, ball.y] = add([ball.x, ball.y], offset)
 	}
 
 	debug() {
 		const { game, paddle, ball, ball2, brick } = this
-		game.drawPoints(paddle.newPoints)
-		game.drawPoints(ball.newPoints)
-		game.drawPoints(ball2.newPoints)
-		game.drawPoints(brick.newPoints)
+		game.drawPoints(paddle.transformedVertices)
+		game.drawPoints(ball.transformedVertices)
+		game.drawPoints(ball2.transformedVertices)
+		game.drawPoints(brick.transformedVertices)
 
 		game.canvas.addEventListener(
 			"click",

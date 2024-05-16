@@ -21,3 +21,8 @@ Destory the bricks by hitting them with the balls
             -   [x] Pause option
 -   scene folder
     -   manage different game scenes
+-   Collide detection
+    -   [x] AABB
+    -   [ ] createBoxVertices
+    -   [x] SAT
+-   Vector2D math

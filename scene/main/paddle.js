@@ -9,24 +9,16 @@ class Paddle {
 		this.y = 540
 		this.speed = 5
 		this.vertices = vertices
-		this.update(this.vertices, {
-			x: this.x,
-			y: this.y,
-		})
+		this.update()
 	}
 
 	#move(x) {
 		this.x = x < 0 ? 0 : x > this.game.w - this.w ? this.game.w - this.w : x
-		this.update(this.vertices, {
-			x: this.x,
-			y: this.y,
-		})
+		this.update()
 	}
 
-	update(points, origin) {
-		this.newPoints = transformVertices(points, origin)
-		// outline segments
-		this.segments = segmentsFromVertices(this.newPoints)
+	update() {
+		this.transformedVertices = transformVertices(this.vertices, { x: this.x, y: this.y })
 	}
 
 	moveLeft() {
@@ -42,17 +34,8 @@ class Paddle {
 		if (intersectAABBs(ball, this)) {
 			// If the collided segment's index is one of 0, 2, 3, 4, 5, 7, 8, 9, the ball will be accelerated,
 			// and 3, 4, 8, 9's reflection is different
-
-			for (let i = 0; i < this.segments.length; i++) {
-				const p = this.segments[i]
-				for (let j = 0; j < ball.segments.length; j++) {
-					const b = ball.segments[j]
-					if (calcIntersection(p[0], p[1], b[0], b[1])) {
-						return i
-					}
-				}
-			}
+			return intersectCirclePolygon(ball, this.transformedVertices)
 		}
-		return -1
+		return null
 	}
 }
