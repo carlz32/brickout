@@ -8,11 +8,22 @@ function intersectAABBs(box1, box2) {
 }
 
 function intersectCircles(circle1, circle2) {
-	const distance = magnitude(subtract(circle1.center, circle2.center))
-	return distance < circle1.radius + circle2.radius
+	log('circle 2 circle')
+	const direction = subtract(circle1.center, circle2.center)
+	const distance = magnitude(direction)
+	const len = distance - circle1.radius - circle2.radius
+	if (len > 0) return false
+	const normal = normalize(direction) 	
+	const depth = Math.abs(len)
+
+	return {
+		normal,
+		depth,
+	}
 }
 
 function intersectCirclePolygon(circle, vertices) {
+	log('circle 2 polygon')
 	const axies = calcCirclePolygonAxises(circle.center, vertices)
 	let normal = [0, 0]
 	let depth = Number.POSITIVE_INFINITY

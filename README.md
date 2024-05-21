@@ -17,12 +17,13 @@ Destory the bricks by hitting them with the balls
         -   [x] **change scenes**
         -   [ ] **load audios**
         -   [ ] **level editor**
-        -   [x] **Debug Mode**
-            -   [x] Pause option
+        -   [x] **debug Mode**
+            -   [x] pause option
+            -   [x] draw box vertices 
 -   scene folder
     -   manage different game scenes
--   Collide detection
+-   collide detection
     -   [x] AABB
-    -   [ ] createBoxVertices
+    -   [x] createBoxVertices
     -   [x] SAT
--   Vector2D math
+-   vector2D math

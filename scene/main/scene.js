@@ -6,6 +6,7 @@ class SceneMain extends GameScene {
 
 	init(game) {
 		this.paddle = new Paddle(game)
+		
 		this.brick = new Brick(game)
 
 		this.balls = []
@@ -92,11 +93,23 @@ class SceneMain extends GameScene {
 	}
 
 	debug() {
-		const { game, paddle, ball, ball2, brick } = this
-		game.drawPoints(paddle.transformedVertices)
+		const { game, ball, ball2, brick } = this
 		game.drawPoints(ball.transformedVertices)
 		game.drawPoints(ball2.transformedVertices)
 		game.drawPoints(brick.transformedVertices)
+		game.context.save()
+		game.context.strokeStyle = 'red'
+		game.context.beginPath()
+		game.context.moveTo(...ball.center)
+		const endX = add(ball.center, [ball.speedX, 0])
+		game.context.lineTo(...endX)
+
+		const endY = add(ball.center, [0, ball.speedY])
+		game.context.moveTo(...ball.center)
+		game.context.lineTo(...endY)
+		game.context.stroke()
+		game.context.restore()
+
 
 		game.canvas.addEventListener(
 			"click",

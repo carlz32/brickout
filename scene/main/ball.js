@@ -10,7 +10,7 @@ class Ball {
 		this.speedX = 10
 		this.speedY = -10
 		this.fired = false
-		this.vertices = vertices
+		this.vertices = this.createBoxVertices(w, h)
 		this.center = [this.x + this.w / 2, this.y + this.h / 2]
 		this.radius = w / 2
 		this.update()
@@ -23,6 +23,20 @@ class Ball {
 
 	fire() {
 		this.fired = true
+	}
+
+	createBoxVertices(width, height) {
+		const left = 0
+		const right = width
+		const top = 0
+		const bottom = height
+
+		return [
+			[left, top],
+			[right, top],
+			[right, bottom],
+			[left, bottom],
+		]
 	}
 
 	move() {
