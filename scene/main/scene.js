@@ -1,131 +1,130 @@
 class SceneMain extends GameScene {
-	constructor(game) {
-		super(game)
-		this.init(game)
-	}
+    constructor(game) {
+        super(game)
+        this.init(game)
+    }
 
-	init(game) {
-		this.paddle = new Paddle(game)
-		
-		this.brick = new Brick(game)
+    init(game) {
+        this.bricks = this.loadLevels(1)
 
-		this.balls = []
-		this.ball = new Ball(game)
-		this.balls.push(this.ball)
+        this.paddle = new Paddle(game)
 
-		this.ball2 = new Ball(game)
-		this.ball2.x = 100
-		this.ball2.y = 300
-		this.balls.push(this.ball2)
+        this.balls = []
+        this.ball = new Ball(game)
+        this.balls.push(this.ball)
 
-		this.addElement(this.paddle)
-		this.addElement(this.balls)
-		this.addElement(this.brick)
+        this.ball2 = new Ball(game)
+        this.ball2.x = 100
+        this.ball2.y = 300
+        this.balls.push(this.ball2)
 
-		this.game.registerAction("a", () => this.paddle.moveLeft())
+        this.addElement(this.paddle)
+        this.addElement(this.balls)
+        this.addElement(this.bricks)
 
-		this.game.registerAction("d", () => this.paddle.moveRight())
+        this.game.registerAction('a', () => this.paddle.moveLeft())
 
-		this.game.registerAction("f", () => this.ball.fire())
-		this.game.registerAction("f", () => this.ball2.fire())
-	}
+        this.game.registerAction('d', () => this.paddle.moveRight())
 
-	update() {
-		const { game, paddle, balls, brick } = this
+        this.game.registerAction('f', () => this.ball.fire())
+        this.game.registerAction('f', () => this.ball2.fire())
+    }
 
-		for (let x = 0; x < balls.length; x++) {
-			const ball = balls[x]
-			ball.move()
+    update() {
+        const { game, paddle, balls, bricks } = this
 
-			let res = paddle.collide(ball)
-			if (res) this.handleReflection(ball, res)
+        for (let x = 0; x < balls.length; x++) {
+            const ball = balls[x]
 
-			// If the collided segment's index is one of 0, 2, 3, 4, 5, 7, 8, 9, the ball will be accelerated,
-			// and 3, 4, 8, 9's reflection is different
-			// arc part
-			// if ([3, 4, 8, 9].includes(i)) {
-			// 	log("reflect [3, 4, 8, 9]")
-			// 	const unitSegVector = this.unitSegVector(paddle.segments[i])
+            // use iterations to improve the precision of collision detection
+            const step = 0.05
+            for (let i = 0; i < 1; i += step) {
+                ball.move(step)
 
-			// 	const newSpeed = this.newBallSpeed(ball, unitSegVector)
-			// 	ball.speedX = newSpeed[0]
-			// 	ball.speedY = newSpeed[1]
-			// }
+                let res = paddle.collide(ball)
+                if (res) this.handleReflection(ball, res)
 
-			// // line part
-			// if ([0, 1, 2, 5, 6, 7].includes(i)) {
-			// 	log("reflect [0, 1, 2, 5, 6, 7]")
-			// 	ball.speedY *= -1
-			// }
+                for (const brick of bricks) {
+                    // TODO check if brick is still alive
+                    res = brick.collide(ball)
+                    if (res) this.handleReflection(ball, res)
+                }
+            }
 
-			// // accelerate part
-			// if ([0, 2, 3, 4, 5, 7, 8, 9].includes(i)) {
-			// 	log("reflect [0, 2, 3, 4, 5, 7, 8, 9]")
-			// 	ball.speedX *= 1.05
-			// 	ball.speedY *= 1.05
-			// }
+            if (ball.y > paddle.y + paddle.h) {
+                balls.splice(x, 1)
+                if (balls.length < 1) {
+                    const s = new SceneEnd(game)
+                    game.replaceScene(s)
+                }
+            }
+        }
+    }
 
-			res = brick.collide(ball) 
-			if (res) this.handleReflection(ball, res)
+    loadLevels(levelIndex) {
+        const levelData = levels[levelIndex - 1]
+        const bricks = []
+        for (const brickData of levelData) {
+            const [x, y, lifes] = brickData
+            const imageName = `brick${lifes.toString().padStart(2, '0')}`
+            const brick = new Brick(this.game, {
+                imageName,
+                x,
+                y,
+                lifes,
+            })
+            bricks.push(brick)
+        }
+        return bricks
+    }
 
-			if (ball.y > paddle.y + paddle.h) {
-				balls.splice(x, 1)
-				if (balls.length < 1) {
-					const s = new SceneEnd(game)
-					game.replaceScene(s)
-				}
-			}
-		}
-	}
+    handleReflection(ball, { normal, depth }) {
+        // speed
+        const speedVector = [ball.speedX, ball.speedY]
+        const project = dot(normal, speedVector)
+        const speedA = scale(normal, project)
+        const speedB = subtract(speedVector, speedA)
+        const newSpeed = add(speedB, scale(speedA, -1))
+        ball.speedX = newSpeed[0]
+        ball.speedY = newSpeed[1]
+        // location
+        const offset = scale(normal, depth)
+        ;[ball.x, ball.y] = add([ball.x, ball.y], offset)
+    }
 
-	handleReflection(ball, { normal, depth }) {
-		// speed
-		const speedVector = [ball.speedX, ball.speedY]
-		const project = dot(normal, speedVector)
-		const speedA = scale(normal, project)
-		const speedB = subtract(speedVector, speedA)
-		const newSpeed = add(speedB, scale(speedA, -1))
-		ball.speedX = newSpeed[0]
-		ball.speedY = newSpeed[1]
-		// location
-		const offset = scale(normal, depth)
-		;[ball.x, ball.y] = add([ball.x, ball.y], offset)
-	}
+    debug() {
+        const { game, ball, ball2, brick } = this
+        game.drawPoints(ball.transformedVertices)
+        game.drawPoints(ball2.transformedVertices)
+        game.drawPoints(brick.transformedVertices)
+        game.context.save()
+        game.context.strokeStyle = 'red'
+        game.context.beginPath()
+        game.context.moveTo(...ball.center)
+        const endX = add(ball.center, [ball.speedX, 0])
+        game.context.lineTo(...endX)
 
-	debug() {
-		const { game, ball, ball2, brick } = this
-		game.drawPoints(ball.transformedVertices)
-		game.drawPoints(ball2.transformedVertices)
-		game.drawPoints(brick.transformedVertices)
-		game.context.save()
-		game.context.strokeStyle = 'red'
-		game.context.beginPath()
-		game.context.moveTo(...ball.center)
-		const endX = add(ball.center, [ball.speedX, 0])
-		game.context.lineTo(...endX)
+        const endY = add(ball.center, [0, ball.speedY])
+        game.context.moveTo(...ball.center)
+        game.context.lineTo(...endY)
+        game.context.stroke()
+        game.context.restore()
 
-		const endY = add(ball.center, [0, ball.speedY])
-		game.context.moveTo(...ball.center)
-		game.context.lineTo(...endY)
-		game.context.stroke()
-		game.context.restore()
-
-
-		game.canvas.addEventListener(
-			"click",
-			(e) => {
-				const x = e.offsetX
-				const y = e.offsetY
-				this.ball.x = x
-				this.ball.y = y
-				this.ball.update(this.ball.relativePoints, {
-					x: x,
-					y: y,
-				})
-			},
-			{
-				once: true,
-			},
-		)
-	}
+        game.canvas.addEventListener(
+            'click',
+            (e) => {
+                const x = e.offsetX
+                const y = e.offsetY
+                this.ball.x = x
+                this.ball.y = y
+                this.ball.update(this.ball.relativePoints, {
+                    x: x,
+                    y: y,
+                })
+            },
+            {
+                once: true,
+            },
+        )
+    }
 }
