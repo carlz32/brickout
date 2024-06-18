@@ -1,22 +1,24 @@
 class GameScene {
     constructor(game) {
         this.game = game
-        this.elements = {}
+
         this.paddles = []
         this.balls = []
         this.bricks = []
+        this.elements = {
+            paddles: this.paddles,
+            balls: this.balls,
+            bricks: this.bricks,
+        }
     }
 
     draw() {
-        for (let i = 0; i < this.elements.length; i++) {
-            const element = this.elements[i]
-            if (Array.isArray(element)) {
-                // TODO check if the element is to be drawed
-                for (const e of element) {
+        for (let key in this.elements) {
+            const elements = this.elements[key]
+            for (const e of elements) {
+                if (!e.isAlive || e.isAlive()) {
                     this.game.drawElement(e)
                 }
-            } else {
-                this.game.drawElement(element)
             }
         }
 
@@ -26,7 +28,7 @@ class GameScene {
     }
 
     addElement(element, type) {
-        this.elements.push(element)
+        this.elements[type].push(element)
     }
 
     update() {}

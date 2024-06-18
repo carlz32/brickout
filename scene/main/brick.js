@@ -27,6 +27,10 @@ class Brick {
         ]
     }
 
+    isAlive() {
+        return this.lifes >= 1
+    }
+
     update() {
         this.transformedVertices = transformVertices(this.vertices, {
             x: this.x,

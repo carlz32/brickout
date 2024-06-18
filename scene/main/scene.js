@@ -7,20 +7,20 @@ class SceneMain extends GameScene {
     init(game) {
         this.bricks = this.loadLevels(1)
 
-        this.paddle = new Paddle(game)
+        for (let brick of this.bricks) {
+            this.addElement(brick, 'bricks')
+        }
 
-        this.balls = []
+        this.paddle = new Paddle(game)
+        this.addElement(this.paddle, 'paddles')
+
         this.ball = new Ball(game)
-        this.balls.push(this.ball)
+        this.addElement(this.ball, 'balls')
 
         this.ball2 = new Ball(game)
         this.ball2.x = 100
         this.ball2.y = 300
-        this.balls.push(this.ball2)
-
-        this.addElement(this.paddle)
-        this.addElement(this.balls)
-        this.addElement(this.bricks)
+        this.addElement(this.ball2, 'balls')
 
         this.game.registerAction('a', () => this.paddle.moveLeft())
 
@@ -45,8 +45,7 @@ class SceneMain extends GameScene {
                 if (res) this.handleReflection(ball, res)
 
                 for (const brick of bricks) {
-                    // TODO check if brick is still alive
-                    res = brick.collide(ball)
+                    res = brick.isAlive() && brick.collide(ball)
                     if (res) this.handleReflection(ball, res)
                 }
             }
@@ -124,7 +123,7 @@ class SceneMain extends GameScene {
             },
             {
                 once: true,
-            },
+            }
         )
     }
 }
