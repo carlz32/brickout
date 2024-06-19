@@ -130,17 +130,17 @@ class Paddle {
     }
 
     collide(ball) {
+        // TODO a bug when hit the border of rectangle
         // narrow phase
-
         if (intersectAABBs(ball, this)) {
-            if (ball.center[0] <= this.transformedVertices[0].vertices[1][0]) {
+            if (ball.center[0] < this.transformedVertices[0].vertices[1][0]) {
                 return intersectCircles(ball, this.transformedVertices[0])
             }
-            if (ball.center[0] >= this.transformedVertices[4].vertices[0][0]) {
+            if (ball.center[0] > this.transformedVertices[4].vertices[0][0]) {
                 return intersectCircles(ball, this.transformedVertices[4])
             }
 
-            for (let i = 1; i < 4; i++) {
+            for (let i = 1; i < this.transformedVertices.length - 1; i++) {
                 const v = this.transformedVertices[i]
                 const res = intersectCirclePolygon(ball, v.vertices)
                 if (res) return res

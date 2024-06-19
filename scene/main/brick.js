@@ -40,8 +40,9 @@ class Brick {
 
     collide(ball) {
         if (intersectAABBs(ball, this)) {
-            this.lifes--
-            return intersectCirclePolygon(ball, this.transformedVertices)
+            const res = intersectCirclePolygon(ball, this.transformedVertices)
+            if (res) this.lifes--
+            return res
         }
         return null
     }

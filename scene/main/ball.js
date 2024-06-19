@@ -6,7 +6,7 @@ class Ball {
         this.w = w
         this.h = h
         this.x = (game.w - this.w) / 2
-        this.y = 500
+        this.y = 450
         this.speedX = 10
         this.speedY = -10
         this.fired = false
@@ -26,6 +26,10 @@ class Ball {
 
     fire() {
         this.fired = true
+    }
+
+    outOfBoundary(y) {
+        return this.y > y
     }
 
     createBoxVertices(width, height) {

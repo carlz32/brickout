@@ -50,7 +50,7 @@ class SceneMain extends GameScene {
                 }
             }
 
-            if (ball.y > paddle.y + paddle.h) {
+            if (ball.outOfBoundary(paddle.y + paddle.h)) {
                 balls.splice(x, 1)
                 if (balls.length < 1) {
                     const s = new SceneEnd(game)
@@ -92,10 +92,10 @@ class SceneMain extends GameScene {
     }
 
     debug() {
-        const { game, ball, ball2, brick } = this
+        const { game, ball, ball2 } = this
         game.drawPoints(ball.transformedVertices)
         game.drawPoints(ball2.transformedVertices)
-        game.drawPoints(brick.transformedVertices)
+
         game.context.save()
         game.context.strokeStyle = 'red'
         game.context.beginPath()
