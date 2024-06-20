@@ -28,6 +28,8 @@ class Ball {
         this.fired = true
     }
 
+    reset() {}
+
     outOfBoundary(y) {
         return this.y > y
     }

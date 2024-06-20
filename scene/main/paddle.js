@@ -94,6 +94,8 @@ class Paddle {
         this.transformedVertices = this.updateVertices()
     }
 
+    reset() {}
+
     updateVertices() {
         const transformedVertices = []
         for (const v of this.vertices) {

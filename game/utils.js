@@ -74,13 +74,13 @@ function setContextFont(context, style) {
     context.textBaseline = style.textBaseline
 }
 
-class Vector2d {
+class Vector2D {
     constructor(x, y) {
         this.x = x
         this.y = y
     }
 
     static default() {
-        return new Vector2d(0, 0)
+        return new Vector2D(0, 0)
     }
 }

@@ -5,7 +5,8 @@ class SceneMain extends GameScene {
     }
 
     init(game) {
-        this.bricks = this.loadLevels(1)
+        this.currentLevel = 1
+        this.bricks = this.loadLevels(this.currentLevel)
 
         for (let brick of this.bricks) {
             this.addElement(brick, 'bricks')
@@ -31,6 +32,12 @@ class SceneMain extends GameScene {
     }
 
     update() {
+        if (this.allBricksOut()) {
+            log(this.currentLevel)
+            this.currentLevel++
+            this.bricks = this.loadLevels(this.currentLevel)
+        }
+
         const { game, paddle, balls, bricks } = this
 
         for (let x = 0; x < balls.length; x++) {
@@ -45,8 +52,10 @@ class SceneMain extends GameScene {
                 if (res) this.handleReflection(ball, res)
 
                 for (const brick of bricks) {
-                    res = brick.isAlive() && brick.collide(ball)
-                    if (res) this.handleReflection(ball, res)
+                    if (brick.isAlive()) {
+                        res = brick.collide(ball)
+                        if (res) this.handleReflection(ball, res)
+                    }
                 }
             }
 
@@ -60,7 +69,15 @@ class SceneMain extends GameScene {
         }
     }
 
+    allBricksOut() {
+        for (let brick of this.bricks) {
+            if (brick.isAlive()) return false
+        }
+        return true
+    }
+
     loadLevels(levelIndex) {
+        log('levelIndex', levelIndex)
         const levelData = levels[levelIndex - 1]
         const bricks = []
         for (const brickData of levelData) {

@@ -17,9 +17,11 @@ Destory the bricks by hitting them with the balls
         -   [x] **change scenes**
         -   [ ] **load audios**
         -   [ ] **level editor**
+            -   [x] level loader
+            -   [ ] editor mode
         -   [x] **debug Mode**
             -   [x] pause option
-            -   [x] draw box vertices 
+            -   [x] draw box vertices
 -   scene folder
     -   manage different game scenes
 -   collide detection
