@@ -28,7 +28,13 @@ class Ball {
         this.fired = true
     }
 
-    reset() {}
+    reset() {
+        this.x = (game.w - this.w) / 2
+        this.y = 450
+        this.speedX = 10
+        this.speedY = -10
+        this.fired = false
+    }
 
     outOfBoundary(y) {
         return this.y > y

@@ -6,22 +6,18 @@ class SceneMain extends GameScene {
 
     init(game) {
         this.currentLevel = 1
-        this.bricks = this.loadLevels(this.currentLevel)
-
-        for (let brick of this.bricks) {
-            this.addElement(brick, 'bricks')
-        }
+        this.loadLevel(this.currentLevel)
 
         this.paddle = new Paddle(game)
-        this.addElement(this.paddle, 'paddles')
+        this.addPaddle(this.paddle)
 
         this.ball = new Ball(game)
-        this.addElement(this.ball, 'balls')
+        this.addBall(this.ball)
 
         this.ball2 = new Ball(game)
         this.ball2.x = 100
         this.ball2.y = 300
-        this.addElement(this.ball2, 'balls')
+        this.addBall(this.ball2)
 
         this.game.registerAction('a', () => this.paddle.moveLeft())
 
@@ -32,13 +28,12 @@ class SceneMain extends GameScene {
     }
 
     update() {
-        if (this.allBricksOut()) {
-            log(this.currentLevel)
-            this.currentLevel++
-            this.bricks = this.loadLevels(this.currentLevel)
-        }
-
         const { game, paddle, balls, bricks } = this
+
+        if (this.allBricksOut()) {
+            this.currentLevel++
+            this.nextLevel(this.currentLevel)
+        }
 
         for (let x = 0; x < balls.length; x++) {
             const ball = balls[x]
@@ -60,7 +55,7 @@ class SceneMain extends GameScene {
             }
 
             if (ball.outOfBoundary(paddle.y + paddle.h)) {
-                balls.splice(x, 1)
+                this.removeBall(x)
                 if (balls.length < 1) {
                     const s = new SceneEnd(game)
                     game.replaceScene(s)
@@ -76,10 +71,16 @@ class SceneMain extends GameScene {
         return true
     }
 
-    loadLevels(levelIndex) {
-        log('levelIndex', levelIndex)
+    nextLevel(levelIndex) {
+        this.loadLevel(levelIndex)
+        this.paddle.reset()
+        this.ball.reset()
+    }
+
+    loadLevel(levelIndex) {
+        this.removeBricks()
+
         const levelData = levels[levelIndex - 1]
-        const bricks = []
         for (const brickData of levelData) {
             const [x, y, lifes] = brickData
             const imageName = `brick${lifes.toString().padStart(2, '0')}`
@@ -89,9 +90,8 @@ class SceneMain extends GameScene {
                 y,
                 lifes,
             })
-            bricks.push(brick)
+            this.addBrick(brick)
         }
-        return bricks
     }
 
     handleReflection(ball, { normal, depth }) {

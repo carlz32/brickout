@@ -5,21 +5,19 @@ class GameScene {
         this.paddles = []
         this.balls = []
         this.bricks = []
-        this.elements = {
-            paddles: this.paddles,
-            balls: this.balls,
-            bricks: this.bricks,
-        }
     }
 
     draw() {
-        for (let key in this.elements) {
-            const elements = this.elements[key]
-            for (const e of elements) {
-                if (!e.isAlive || e.isAlive()) {
-                    this.game.drawElement(e)
-                }
-            }
+        for (let paddle of this.paddles) {
+            this.game.drawElement(paddle)
+        }
+
+        for (let ball of this.balls) {
+            this.game.drawElement(ball)
+        }
+
+        for (let brick of this.bricks) {
+            if (brick.isAlive()) this.game.drawElement(brick)
         }
 
         if (this.game.debug) {
@@ -27,8 +25,24 @@ class GameScene {
         }
     }
 
-    addElement(element, type) {
-        this.elements[type].push(element)
+    addBrick(element) {
+        this.bricks.push(element)
+    }
+
+    addPaddle(element) {
+        this.paddles.push(element)
+    }
+
+    addBall(element) {
+        this.balls.push(element)
+    }
+
+    removeBall(index) {
+        this.balls.splice(index, 1)
+    }
+
+    removeBricks() {
+        this.bricks = []
     }
 
     update() {}

@@ -94,7 +94,11 @@ class Paddle {
         this.transformedVertices = this.updateVertices()
     }
 
-    reset() {}
+    reset() {
+        this.x = (game.w - this.w) / 2
+        this.y = 540
+        this.speed = 5
+    }
 
     updateVertices() {
         const transformedVertices = []
