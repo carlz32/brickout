@@ -25,33 +25,33 @@
         <div id="level-editor">
             <img
                 id="brick01"
-                src="img/element_purple_rectangle.png"
-                alt="purple rectangle"
-            />
-            <img
-                id="brick02"
-                src="img/element_blue_rectangle.png"
-                alt="blue rectangle"
-            />
-            <img
-                id="brick03"
-                src="img/element_green_rectangle.png"
-                alt="green rectangle"
-            />
-            <img
-                id="brick04"
-                src="img/element_red_rectangle.png"
-                alt="red rectangle"
-            />
-            <img
-                id="brick05"
                 src="img/element_grey_rectangle.png"
                 alt="grey rectangle"
             />
             <img
-                id="birck06"
+                id="brick02"
+                src="img/element_green_rectangle.png"
+                alt="green rectangle"
+            />
+            <img
+                id="brick03"
+                src="img/element_blue_rectangle.png"
+                alt="blue rectangle"
+            />
+            <img
+                id="birck04"
                 src="img/element_yellow_rectangle.png"
                 alt="yellow rectangle"
+            />
+            <img
+                id="brick05"
+                src="img/element_purple_rectangle.png"
+                alt="purple rectangle"
+            />
+            <img
+                id="brick06"
+                src="img/element_red_rectangle.png"
+                alt="red rectangle"
             />
         </div>
         <!-- game -->
@@ -71,46 +71,47 @@
         <script src="./level.js"></script>
 
         <script>
-            const editor = e("#level-editor");
-            editor.addEventListener("click", (event) => {
-                log(event.target);
-                game.drawElement(event.target);
-            });
+            const editor = e('#level-editor')
+            editor.addEventListener('click', (event) => {
+                log(event.target)
+                // TODO a new Brick instance, or convert img element to a Brick instance
+                game.drawElement(event.target)
+            })
         </script>
         <script>
             // image outline
             function imageOutlinePoints() {
-                const smallCanvas = document.querySelector("#id-canvas"),
-                    smallCtx = smallCanvas.getContext("2d");
+                const smallCanvas = document.querySelector('#id-canvas'),
+                    smallCtx = smallCanvas.getContext('2d')
 
-                let start = false;
-                let points = [];
-                document.addEventListener("keydown", (event) => {
-                    let key = event.key;
+                let start = false
+                let points = []
+                document.addEventListener('keydown', (event) => {
+                    let key = event.key
 
-                    if (key == "s") {
-                        log("start to record");
-                        start = true;
+                    if (key == 's') {
+                        log('start to record')
+                        start = true
                     }
-                });
+                })
 
-                smallCanvas.addEventListener("click", (event) => {
+                smallCanvas.addEventListener('click', (event) => {
                     if (start) {
-                        const x = event.offsetX;
-                        const y = event.offsetY;
-                        log("xy", x, y);
-                        points.push([x, y]);
+                        const x = event.offsetX
+                        const y = event.offsetY
+                        log('xy', x, y)
+                        points.push([x, y])
                     }
-                });
-                document.addEventListener("keyup", (event) => {
-                    let key = event.key;
+                })
+                document.addEventListener('keyup', (event) => {
+                    let key = event.key
 
-                    if (key == "e") {
-                        log("start to record");
-                        start = false;
-                        log("points", points);
+                    if (key == 'e') {
+                        log('start to record')
+                        start = false
+                        log('points', points)
                     }
-                });
+                })
             }
         </script>
     </body>

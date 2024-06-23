@@ -45,6 +45,9 @@ class Game {
         this.context.drawImage(element.image, element.x, element.y)
     }
 
+    // TODO level editor
+    drawGrids() {}
+
     drawText(str) {
         const { context } = this
         // text object which contains x, y, contents, font, size, color, textAlign, textBaseline config

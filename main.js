@@ -26,17 +26,17 @@ const __main = () => {
         },
     }
 
-    // As we see here, the Scene class initialization process needs the Game instance,
+    // As we see here, the Scene class's initialization process needs the Game instance,
     // likewise, the Game class also needs a Scene instance to initialize
     // So here, we use a callback function, when the Game instance finished it's asynchronous things,
-    // call the callback function, then Scene is prepared and signed to Game.
+    // call the callback function, then Scene is prepared and assigned to the Game class.
     game = new Game(
         images,
         (g) => {
             const scene = new SceneStart(g)
             g.runWithScene(scene)
         },
-        30,
+        30
     )
 
     enableDebugMode(game, true)
