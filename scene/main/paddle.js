@@ -136,7 +136,7 @@ class Paddle {
     }
 
     collide(ball) {
-        // TODO a bug when hit the border of rectangle
+        // TODO: a bug when hit the border of rectangle
         // narrow phase
         if (intersectAABBs(ball, this)) {
             if (ball.center[0] < this.transformedVertices[0].vertices[1][0]) {

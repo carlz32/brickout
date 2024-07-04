@@ -22,7 +22,7 @@
             <label for="id-fps">FPS</label>
             <input type="range" id="id-fps" min="1" value="50" />
         </div>
-        <div id="level-editor">
+        <div id="level-elements">
             <img
                 id="brick01"
                 src="img/element_grey_rectangle.png"
@@ -39,7 +39,7 @@
                 alt="blue rectangle"
             />
             <img
-                id="birck04"
+                id="brick04"
                 src="img/element_yellow_rectangle.png"
                 alt="yellow rectangle"
             />
@@ -66,18 +66,11 @@
         <script src="./scene/main/scene.js"></script>
         <script src="./scene/start/scene.js"></script>
         <script src="./scene/end/scene.js"></script>
+        <script src="./scene/editor/scene.js"></script>
         <!-- main -->
         <script src="./main.js"></script>
         <script src="./level.js"></script>
 
-        <script>
-            const editor = e('#level-editor')
-            editor.addEventListener('click', (event) => {
-                log(event.target)
-                // TODO a new Brick instance, or convert img element to a Brick instance
-                game.drawElement(event.target)
-            })
-        </script>
         <script>
             // image outline
             function imageOutlinePoints() {

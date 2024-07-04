@@ -57,8 +57,7 @@ class SceneMain extends GameScene {
             if (ball.outOfBoundary(paddle.y + paddle.h)) {
                 this.removeBall(x)
                 if (balls.length < 1) {
-                    const s = new SceneEnd(game)
-                    game.replaceScene(s)
+                    game.replaceScene(SceneEnd)
                 }
             }
         }

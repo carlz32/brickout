@@ -6,8 +6,7 @@ class SceneEnd extends GameScene {
 
     init(game) {
         game.registerAction('r', () => {
-            const s = new SceneStart(game)
-            game.replaceScene(s)
+            game.replaceScene(SceneStart)
         })
     }
 

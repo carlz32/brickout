@@ -1,6 +1,5 @@
 class Game {
     constructor(images, runCallback, fps = 60) {
-        // this.actions[key] = []
         this.actions = {}
         this.keydowns = {}
         this.scene = null
@@ -8,6 +7,8 @@ class Game {
         this.images = images
         this.fps = fps
         this.debug = false
+        this.cellWidth = 64
+        this.cellHeight = 32
 
         this.initCanvas()
         this.bindEvents()
@@ -41,14 +42,15 @@ class Game {
         this.actions[key].push(callback)
     }
 
+    resetActions() {
+        this.actions = {}
+    }
+
     drawElement(element) {
         this.context.drawImage(element.image, element.x, element.y)
     }
 
-    // TODO level editor
-    drawGrids() {}
-
-    drawText(str) {
+    drawText(ctx) {
         const { context } = this
         // text object which contains x, y, contents, font, size, color, textAlign, textBaseline config
         const defaultConfig = {
@@ -63,7 +65,7 @@ class Game {
         }
         const { x, y, contents, ...config } = {
             ...defaultConfig,
-            ...str,
+            ...ctx,
         }
 
         const textWidths = []
@@ -193,7 +195,8 @@ class Game {
         return image
     }
 
-    replaceScene(scene) {
-        this.scene = scene
+    replaceScene(Scene) {
+        this.resetActions()
+        this.scene = new Scene(this)
     }
 }

@@ -5,9 +5,12 @@ class SceneStart extends GameScene {
     }
 
     init(game) {
+        game.registerAction('e', () => {
+            game.replaceScene(SceneEditor)
+        })
+
         game.registerAction('k', () => {
-            const s = new SceneMain(game)
-            game.replaceScene(s)
+            game.replaceScene(SceneMain)
         })
     }
 
@@ -31,7 +34,7 @@ class SceneStart extends GameScene {
                     size: 36,
                 },
                 {
-                    text: 'to start bricking out! ',
+                    text: 'to start',
                     font: 'Iosevka Nerd Font',
                 },
             ],
@@ -40,13 +43,22 @@ class SceneStart extends GameScene {
             x: x,
             y: y + 50,
             color: 'blue',
-            textAlign: 'center',
             contents: [
                 {
-                    text: 'Happy Gaming',
+                    text: 'Press ',
+                    font: 'Iosevka Nerd Font',
+                },
+                {
+                    text: 'e ',
+                    font: 'VictorMono Nerd Font',
+                    color: 'red',
+                    size: 36,
+                },
+                {
+                    text: 'to editor your level',
+                    font: 'Iosevka Nerd Font',
                 },
             ],
-            font: 'VictorMono Nerd Font',
         })
     }
 
