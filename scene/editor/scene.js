@@ -1,39 +1,69 @@
 class SceneEditor extends GameScene {
     constructor(game) {
         super(game)
-        this.selectedElement = null
-        this.init(game)
+        this.registerActions(game)
         this.bindEvents(game)
+        this.levels = []
+        this.isSaving = false
     }
 
-    init(game) {
-        game.registerAction('r', () => {
-            game.replaceScene(SceneStart)
+    registerActions(game) {
+        super.registerActions(game)
+        game.registerAction('Enter', () => {
+            const data = `const levels = ${JSON.stringify(this.levels)}`
+            log(data)
+            this.levels = []
         })
+
         game.registerAction('s', () => {
             // save bricks to file
+            if (this.bricks.length == 0) {
+                log("Nothing to save")
+                return
+            }
+
+            if (this.isSaving == true) {
+                log("Saving...")
+            }
+            this.isSaving = true
+
+            let level = []
+            for (const brick of this.bricks) {
+                const { x, y, lifes } = brick
+                level.push([x, y, lifes])
+            }
+
+            this.levels.push(level)
+
+            this.isSaving = false
+            log('level', this.levels)
+            this.bricks = []
         })
     }
 
     bindEvents(game) {
         const editor = e('#level-elements')
         editor.addEventListener('click', (event) => {
-            this.selectedElement = event.target
+            this.setSelectedElement(event.target)
         })
 
         const canvas = document.querySelector('#id-canvas')
         canvas.addEventListener('click', (event) => {
-            const x = Math.floor(event.offsetX / game.cellWidth) * game.cellWidth
-            const y = Math.floor(event.offsetY / game.cellHeight) * game.cellHeight
-            const imageName = this.selectedElement.id
-            const lifes = imageName.split('0')[1]
-            const element = new Brick(game, {
-                imageName,
-                x,
-                y,
-                lifes,
-            })
-            this.addBrick(element)
+            try {
+                const x = Math.floor(event.offsetX / game.cellWidth) * game.cellWidth
+                const y = Math.floor(event.offsetY / game.cellHeight) * game.cellHeight
+                const imageName = this.selectedElement.id
+                const lifes = Number(imageName.split('0')[1])
+                const element = new Brick(game, {
+                    imageName,
+                    x,
+                    y,
+                    lifes,
+                })
+                this.addBrick(element)
+            } catch (err) {
+                log("Please select an element")
+            }
         })
     }
 
