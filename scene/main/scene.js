@@ -2,6 +2,7 @@ class SceneMain extends GameScene {
     constructor(game) {
         super(game)
         this.init(game)
+        this.registerActions(game)
     }
 
     init(game) {
@@ -19,12 +20,16 @@ class SceneMain extends GameScene {
         this.ball2.y = 300
         this.addBall(this.ball2)
 
-        this.game.registerAction('a', () => this.paddle.moveLeft())
+    }
 
-        this.game.registerAction('d', () => this.paddle.moveRight())
+    registerActions(game) {
+        super.registerActions(game)
+        game.registerAction('a', () => this.paddle.moveLeft())
 
-        this.game.registerAction('f', () => this.ball.fire())
-        this.game.registerAction('f', () => this.ball2.fire())
+        game.registerAction('d', () => this.paddle.moveRight())
+
+        game.registerAction('f', () => this.ball.fire())
+        game.registerAction('f', () => this.ball2.fire())
     }
 
     update() {

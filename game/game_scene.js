@@ -7,6 +7,12 @@ class GameScene {
         this.bricks = []
     }
 
+    registerActions(game) {
+        game.registerAction('r', () => {
+            game.replaceScene(SceneStart)
+        })
+    }
+
     draw() {
         for (let paddle of this.paddles) {
             this.game.drawElement(paddle)
@@ -45,7 +51,7 @@ class GameScene {
         this.bricks = []
     }
 
-    update() {}
+    update() { }
 
-    debug() {}
+    debug() { }
 }

@@ -1,13 +1,11 @@
 class SceneEnd extends GameScene {
     constructor(game) {
         super(game)
-        this.init(game)
+        this.registerActions(game)
     }
 
-    init(game) {
-        game.registerAction('r', () => {
-            game.replaceScene(SceneStart)
-        })
+    registerActions(game) {
+        super.registerActions(game)
     }
 
     draw() {

@@ -1,10 +1,11 @@
 class SceneStart extends GameScene {
     constructor(game) {
         super(game)
-        this.init(game)
+        this.registerActions(game)
     }
 
-    init(game) {
+    registerActions(game) {
+        super.registerActions(game)
         game.registerAction('e', () => {
             game.replaceScene(SceneEditor)
         })
