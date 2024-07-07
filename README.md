@@ -31,4 +31,4 @@ Destory the bricks by hitting them with the balls
 -   vector2D math
 
 ## Roadmap
--   render step by step, like online course 
+-   render step by step, like an online course 

@@ -3,51 +3,23 @@ class SceneEditor extends GameScene {
         super(game)
         this.registerActions(game)
         this.bindEvents(game)
+        
+        this.currentLevel = 1
         this.levels = []
-        this.isSaving = false
+        this.resetLevel()
     }
 
     registerActions(game) {
         super.registerActions(game)
-        game.registerAction('Enter', () => {
-            const data = `const levels = ${JSON.stringify(this.levels)}`
-            log(data)
-            this.levels = []
-        })
-
-        game.registerAction('s', () => {
-            // save bricks to file
-            if (this.bricks.length == 0) {
-                log("Nothing to save")
-                return
-            }
-
-            if (this.isSaving == true) {
-                log("Saving...")
-            }
-            this.isSaving = true
-
-            let level = []
-            for (const brick of this.bricks) {
-                const { x, y, lifes } = brick
-                level.push([x, y, lifes])
-            }
-
-            this.levels.push(level)
-
-            this.isSaving = false
-            log('level', this.levels)
-            this.bricks = []
-        })
     }
 
     bindEvents(game) {
-        const editor = e('#level-elements')
+        const editor = e('.elements')
         editor.addEventListener('click', (event) => {
             this.setSelectedElement(event.target)
         })
 
-        const canvas = document.querySelector('#id-canvas')
+        const canvas = e('#id-canvas')
         canvas.addEventListener('click', (event) => {
             try {
                 const x = Math.floor(event.offsetX / game.cellWidth) * game.cellWidth
@@ -61,10 +33,67 @@ class SceneEditor extends GameScene {
                     lifes,
                 })
                 this.addBrick(element)
-            } catch (err) {
+            } catch {
                 log("Please select an element")
             }
         })
+
+        // next level button
+        const nextLevelButton = e('#id-button-next')
+        nextLevelButton.addEventListener('click', () => {
+            this.resetBricks()
+            this.nextLevel()
+        })
+
+// next level button
+        const saveCurrentLevelButton = e('#id-button-save-current')
+        saveCurrentLevelButton.addEventListener('click', () => {
+            const levelData = this.generateLevelData()
+            this.addCurrentLevel(levelData)
+        })
+
+        // save button
+        const saveButton = e('#id-button-save-all')
+        saveButton.addEventListener('click', () => {
+            log(`const levels = ${JSON.stringify(this.levels)}`)
+        })
+    }
+
+    generateLevelData() {
+        if (this.bricks.length == 0) {
+            log("Nothing to save")
+            return
+        }
+
+        let level = []
+        for (const brick of this.bricks) {
+            const { x, y, lifes } = brick
+            level.push([x, y, lifes])
+        }
+        return level
+    }
+
+    resetBricks() {
+        this.bricks = []
+    }
+
+    addCurrentLevel(level) {
+        let index = this.currentLevel - 1
+        if (!this.levels[index])
+            this.levels[index] = []
+        this.levels[index].push(...level)
+        log('Current Level Saved', level)
+    }
+
+    nextLevel() {
+        this.currentLevel++
+        log(`Level ${this.currentLevel}`)
+    }
+
+    resetLevel() {
+        this.currentLevel = 1
+        this.bricks = []
+        log(`Level ${this.currentLevel}`)
     }
 
     draw() {
@@ -106,7 +135,10 @@ class SceneEditor extends GameScene {
         ctx.restore()
     }
 
-    update() { }
+    update() {
+        const levelText = e('#id-level')
+        levelText.value = this.currentLevel
+    }
 
     debug() { }
 }

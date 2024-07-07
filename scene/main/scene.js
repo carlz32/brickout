@@ -34,6 +34,8 @@ class SceneMain extends GameScene {
 
     update() {
         const { game, paddle, balls, bricks } = this
+        const levelText = e('#id-level')
+        levelText.value = this.currentLevel
 
         if (this.allBricksOut()) {
             this.currentLevel++
