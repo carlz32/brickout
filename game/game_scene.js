@@ -51,7 +51,7 @@ class GameScene {
         this.bricks = []
     }
 
-    update() { }
+    update() {}
 
-    debug() { }
+    debug() {}
 }

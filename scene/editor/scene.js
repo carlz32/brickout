@@ -3,7 +3,7 @@ class SceneEditor extends GameScene {
         super(game)
         this.registerActions(game)
         this.bindEvents(game)
-        
+
         this.currentLevel = 1
         this.levels = []
         this.resetLevel()
@@ -22,8 +22,11 @@ class SceneEditor extends GameScene {
         const canvas = e('#id-canvas')
         canvas.addEventListener('click', (event) => {
             try {
-                const x = Math.floor(event.offsetX / game.cellWidth) * game.cellWidth
-                const y = Math.floor(event.offsetY / game.cellHeight) * game.cellHeight
+                const x =
+                    Math.floor(event.offsetX / game.cellWidth) * game.cellWidth
+                const y =
+                    Math.floor(event.offsetY / game.cellHeight) *
+                    game.cellHeight
                 const imageName = this.selectedElement.id
                 const lifes = Number(imageName.split('0')[1])
                 const element = new Brick(game, {
@@ -34,22 +37,26 @@ class SceneEditor extends GameScene {
                 })
                 this.addBrick(element)
             } catch {
-                log("Please select an element")
+                log('Please select an element')
             }
         })
 
         // next level button
         const nextLevelButton = e('#id-button-next')
         nextLevelButton.addEventListener('click', () => {
+            const levelData = this.generateLevelData()
+            this.addCurrentLevel(levelData)
             this.resetBricks()
             this.nextLevel()
         })
 
-// next level button
-        const saveCurrentLevelButton = e('#id-button-save-current')
+        // previous level button
+        const saveCurrentLevelButton = e('#id-button-prev')
         saveCurrentLevelButton.addEventListener('click', () => {
             const levelData = this.generateLevelData()
             this.addCurrentLevel(levelData)
+            this.resetBricks()
+            this.prevLevel()
         })
 
         // save button
@@ -61,8 +68,7 @@ class SceneEditor extends GameScene {
 
     generateLevelData() {
         if (this.bricks.length == 0) {
-            log("Nothing to save")
-            return
+            throw 'Nothing to save'
         }
 
         let level = []
@@ -79,14 +85,23 @@ class SceneEditor extends GameScene {
 
     addCurrentLevel(level) {
         let index = this.currentLevel - 1
-        if (!this.levels[index])
+        if (!this.levels[index]) {
             this.levels[index] = []
-        this.levels[index].push(...level)
+            this.levels[index].push(...level)
+        } else {
+            this.levels[index] = level
+        }
         log('Current Level Saved', level)
     }
 
     nextLevel() {
         this.currentLevel++
+        log(`Level ${this.currentLevel}`)
+    }
+
+    prevLevel() {
+        this.currentLevel--
+        if (this.currentLevel === 0) this.currentLevel = 1
         log(`Level ${this.currentLevel}`)
     }
 
@@ -99,7 +114,6 @@ class SceneEditor extends GameScene {
     draw() {
         super.draw()
         this.drawGrids(this.game, this.game.cellWidth, this.game.cellHeight)
-
     }
 
     setSelectedElement(element) {
@@ -140,5 +154,5 @@ class SceneEditor extends GameScene {
         levelText.value = this.currentLevel
     }
 
-    debug() { }
+    debug() {}
 }

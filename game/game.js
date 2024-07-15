@@ -1,14 +1,22 @@
 class Game {
-    constructor(images, runCallback, fps = 60) {
+    constructor(
+        images,
+        runCallback,
+        opts = {
+            fps: 60,
+            brickWidth: 64,
+            brickHeight: 32,
+        }
+    ) {
         this.actions = {}
         this.keydowns = {}
         this.scene = null
         this.runCallback = runCallback
         this.images = images
-        this.fps = fps
+        this.fps = opts.fps
         this.debug = false
-        this.cellWidth = 64
-        this.cellHeight = 32
+        this.cellWidth = opts.brickWidth
+        this.cellHeight = opts.brickHeight
 
         this.initCanvas()
         this.bindEvents()
@@ -18,6 +26,10 @@ class Game {
     initCanvas() {
         const canvas = document.querySelector('#id-canvas')
         const context = canvas.getContext('2d')
+        const w = window.innerWidth * 0.9
+        const h = window.innerHeight * 0.7
+        canvas.width = w - (w % this.cellWidth)
+        canvas.height = h - (h % this.cellHeight)
 
         this.canvas = canvas
         this.context = context
@@ -129,6 +141,7 @@ class Game {
 
     update() {
         if (this.debug) return
+        this.initCanvas()
         this.scene.update()
     }
 

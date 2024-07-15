@@ -19,7 +19,6 @@ class SceneMain extends GameScene {
         this.ball2.x = 100
         this.ball2.y = 300
         this.addBall(this.ball2)
-
     }
 
     registerActions(game) {

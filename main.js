@@ -30,14 +30,10 @@ const __main = () => {
     // likewise, the Game class also needs a Scene instance to initialize
     // So here, we use a callback function, when the Game instance finished it's asynchronous things,
     // call the callback function, then Scene is prepared and assigned to the Game class.
-    game = new Game(
-        images,
-        (g) => {
-            const scene = new SceneStart(g)
-            g.runWithScene(scene)
-        },
-        30
-    )
+    game = new Game(images, (g) => {
+        const scene = new SceneStart(g)
+        g.runWithScene(scene)
+    })
 
     enableDebugMode(game, true)
 }

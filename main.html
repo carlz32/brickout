@@ -1,101 +1,127 @@
 <!doctype html>
 <html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <title>hit the block</title>
+        <style>
+            body {
+                display: flex;
+                flex-direction: column;
+                justify-content: space-around;
+                align-items: center;
+                min-height: 100vh;
+            }
 
-<head>
-    <meta charset="UTF-8" />
-    <title>hit the block</title>
-    <style>
-        body {
-            display: flex;
-            flex-direction: column;
-            justify-content: space-around;
-            align-items: center;
-            min-height: 100vh;
-        }
+            canvas {
+                border: 5px black solid;
+            }
+        </style>
+    </head>
 
-        canvas {
-            border: 5px black solid;
-        }
-    </style>
-</head>
+    <body>
+        <canvas id="id-canvas"></canvas>
+        <div class="editor">
+            <div class="game-info">
+                <label for="id-fps">FPS</label>
+                <input type="range" id="id-fps" min="1" value="50" />
 
-<body>
-    <canvas id="id-canvas" width="640" height="640"></canvas>
-    <div class="editor">
-        <div class="game-info">
-            <label for="id-fps">FPS</label>
-            <input type="range" id="id-fps" min="1" value="50" />
-
-            <label for="id-level">Level</label>
-            <input type="text" id="id-level" value="1" />
+                <label for="id-level">Level</label>
+                <input type="text" id="id-level" value="1" />
+            </div>
+            <div class="buttons">
+                <button id="id-button-prev" type="button">
+                    Previous Level
+                </button>
+                <button id="id-button-next" type="button">Next Level</button>
+                <button id="id-button-save-all" type="button">
+                    Save All Data
+                </button>
+            </div>
+            <div class="elements">
+                <img
+                    id="brick01"
+                    src="img/element_grey_rectangle.png"
+                    alt="grey rectangle"
+                />
+                <img
+                    id="brick02"
+                    src="img/element_green_rectangle.png"
+                    alt="green rectangle"
+                />
+                <img
+                    id="brick03"
+                    src="img/element_blue_rectangle.png"
+                    alt="blue rectangle"
+                />
+                <img
+                    id="brick04"
+                    src="img/element_yellow_rectangle.png"
+                    alt="yellow rectangle"
+                />
+                <img
+                    id="brick05"
+                    src="img/element_purple_rectangle.png"
+                    alt="purple rectangle"
+                />
+                <img
+                    id="brick06"
+                    src="img/element_red_rectangle.png"
+                    alt="red rectangle"
+                />
+            </div>
         </div>
-        <div class="buttons">
-            <button id="id-button-save-current" type="button">Save Current Level Data</button>
-            <button id="id-button-next" type="button">Next Level</button>
-            <button id="id-button-save-all" type="button">Save All Data</button>
-        </div>
-        <div class="elements">
-            <img id="brick01" src="img/element_grey_rectangle.png" alt="grey rectangle" />
-            <img id="brick02" src="img/element_green_rectangle.png" alt="green rectangle" />
-            <img id="brick03" src="img/element_blue_rectangle.png" alt="blue rectangle" />
-            <img id="brick04" src="img/element_yellow_rectangle.png" alt="yellow rectangle" />
-            <img id="brick05" src="img/element_purple_rectangle.png" alt="purple rectangle" />
-            <img id="brick06" src="img/element_red_rectangle.png" alt="red rectangle" />
-        </div>
-    </div>
-    <!-- game -->
-    <script src="./game/utils.js"></script>
-    <script src="./game/collide.js"></script>
-    <script src="./game/game.js"></script>
-    <script src="./game/game_scene.js"></script>
-    <!-- scene -->
-    <script src="./scene/main/ball.js"></script>
-    <script src="./scene/main/paddle.js"></script>
-    <script src="./scene/main/brick.js"></script>
-    <script src="./scene/main/scene.js"></script>
-    <script src="./scene/start/scene.js"></script>
-    <script src="./scene/end/scene.js"></script>
-    <script src="./scene/editor/scene.js"></script>
-    <!-- main -->
-    <script src="./main.js"></script>
-    <script src="./level.js"></script>
+        <!-- game -->
+        <script src="./game/utils.js"></script>
+        <script src="./game/collide.js"></script>
+        <script src="./game/game.js"></script>
+        <script src="./game/game_scene.js"></script>
+        <!-- scene -->
+        <script src="./scene/main/ball.js"></script>
+        <script src="./scene/main/paddle.js"></script>
+        <script src="./scene/main/brick.js"></script>
+        <script src="./scene/main/scene.js"></script>
+        <script src="./scene/start/scene.js"></script>
+        <script src="./scene/end/scene.js"></script>
+        <script src="./scene/editor/scene.js"></script>
+        <!-- main -->
+        <script src="./main.js"></script>
+        <script src="./level.js"></script>
 
-    <script>
-        // image outline
-        function imageOutlinePoints() {
-            const smallCanvas = document.querySelector('#id-canvas'),
-                smallCtx = smallCanvas.getContext('2d')
+        <script>
+            // image outline
+            function imageOutlinePoints() {
+                const smallCanvas = document.querySelector('#id-canvas'),
+                    smallCtx = smallCanvas.getContext('2d')
 
-            let start = false
-            let points = []
-            document.addEventListener('keydown', (event) => {
-                let key = event.key
+                let start = false
+                let points = []
+                document.addEventListener('keydown', (event) => {
+                    let key = event.key
 
-                if (key == 's') {
-                    log('start to record')
-                    start = true
-                }
-            })
+                    if (key == 's') {
+                        log('start to record')
+                        start = true
+                    }
+                })
 
-            smallCanvas.addEventListener('click', (event) => {
-                if (start) {
-                    const x = event.offsetX
-                    const y = event.offsetY
-                    log('xy', x, y)
-                    points.push([x, y])
-                }
-            })
-            document.addEventListener('keyup', (event) => {
-                let key = event.key
+                smallCanvas.addEventListener('click', (event) => {
+                    if (start) {
+                        const x = event.offsetX
+                        const y = event.offsetY
+                        log('xy', x, y)
+                        points.push([x, y])
+                    }
+                })
+                document.addEventListener('keyup', (event) => {
+                    let key = event.key
 
-                if (key == 'e') {
-                    log('start to record')
-                    start = false
-                    log('points', points)
-                }
-            })
-        }
-    </script>
-</body>
-
+                    if (key == 'e') {
+                        log('start to record')
+                        start = false
+                        log('points', points)
+                    }
+                })
+            }
+        </script>
+    </body>
 </html>
