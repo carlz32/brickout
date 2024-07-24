@@ -22,6 +22,7 @@ Destory the bricks by hitting them with the balls
     - [x] **debug Mode**
       - [x] pause option
       - [x] draw box vertices
+    - [ ] notify
 - scene folder
   - manage different game scenes
 - collide detection
@@ -32,4 +33,4 @@ Destory the bricks by hitting them with the balls
 
 ## Roadmap
 
-- [ ] render step by step, like an online tutorial
+- render step by step, like an online tutorial

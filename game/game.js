@@ -62,7 +62,7 @@ class Game {
         this.context.drawImage(element.image, element.x, element.y)
     }
 
-    drawText(ctx) {
+    drawText(opts) {
         const { context } = this
         // text object which contains x, y, contents, font, size, color, textAlign, textBaseline config
         const defaultConfig = {
@@ -77,7 +77,7 @@ class Game {
         }
         const { x, y, contents, ...config } = {
             ...defaultConfig,
-            ...ctx,
+            ...opts,
         }
 
         const textWidths = []
