@@ -51,8 +51,8 @@ class SceneEditor extends GameScene {
         })
 
         // previous level button
-        const saveCurrentLevelButton = e('#id-button-prev')
-        saveCurrentLevelButton.addEventListener('click', () => {
+        const preLevelButton = e('#id-button-prev')
+        preLevelButton.addEventListener('click', () => {
             const levelData = this.generateLevelData()
             this.addCurrentLevel(levelData)
             this.resetBricks()
@@ -91,7 +91,7 @@ class SceneEditor extends GameScene {
         } else {
             this.levels[index] = level
         }
-        log('Current Level Saved', level)
+        Notify.info('Current Level Saved', level)
     }
 
     nextLevel() {

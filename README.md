@@ -1,6 +1,6 @@
 # A BRICKOUT GAME
 
-Destory the bricks by hitting them with the balls
+Destory the bricks
 
 ## Code Structure
 
@@ -23,13 +23,18 @@ Destory the bricks by hitting them with the balls
       - [x] pause option
       - [x] draw box vertices
     - [ ] notify
+      - [ ] display information/message on canvas for certain period of time
 - scene folder
   - manage different game scenes
-- collide detection
+- collision detection
   - [x] AABB
   - [x] createBoxVertices
   - [x] SAT
 - vector2D math
+  - add/subtract
+  - scale/normalize
+  - dot/cross product
+  - magnitude
 
 ## Roadmap
 

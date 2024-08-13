@@ -3,9 +3,20 @@ class Notify {
         this.game = game
     }
 
-    info() {}
+    // TODO: after duration, clear the area of text?
+    static info(message, duration = 3) {
+        const config = {
+            color: 'blue',
+            contents: [
+                {
+                    text: message,
+                },
+            ],
+        }
+        this.game.drawText(config)
+    }
 
-    warn() {}
+    static warn() {}
 
-    error() {}
+    static error() {}
 }

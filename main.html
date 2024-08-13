@@ -75,6 +75,7 @@
         <script src="./game/collide.js"></script>
         <script src="./game/game.js"></script>
         <script src="./game/game_scene.js"></script>
+        <script src="./game/notify.js"></script>
         <!-- scene -->
         <script src="./scene/main/ball.js"></script>
         <script src="./scene/main/paddle.js"></script>
@@ -90,8 +91,8 @@
         <script>
             // image outline
             function imageOutlinePoints() {
-                const smallCanvas = document.querySelector('#id-canvas'),
-                    smallCtx = smallCanvas.getContext('2d')
+                const smallCanvas = document.querySelector('#id-canvas')
+                const smallCtx = smallCanvas.getContext('2d')
 
                 let start = false
                 let points = []

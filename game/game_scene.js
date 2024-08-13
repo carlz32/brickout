@@ -5,6 +5,7 @@ class GameScene {
         this.paddles = []
         this.balls = []
         this.bricks = []
+        this.messageQueue = []
     }
 
     registerActions(game) {
@@ -24,6 +25,10 @@ class GameScene {
 
         for (let brick of this.bricks) {
             if (brick.isAlive()) this.game.drawElement(brick)
+        }
+
+        for (let message of this.messageQueue) {
+            this.game.drawText(message)
         }
 
         if (this.game.debug) {
