@@ -22,8 +22,8 @@ Destory the bricks
     - [x] **debug Mode**
       - [x] pause option
       - [x] draw box vertices
-    - [ ] notify
-      - [ ] display information/message on canvas for certain period of time
+    - [x] notify
+      - [x] display information/message on canvas for certain period of time
 - scene folder
   - manage different game scenes
 - collision detection

@@ -91,12 +91,24 @@ class SceneEditor extends GameScene {
         } else {
             this.levels[index] = level
         }
-        Notify.info('Current Level Saved', level)
+
+        const info = Notification.Info(
+            [300, 300],
+            `Level ${this.currentLevel} saved`,
+            3000
+        )
+        this.addNotification(info)
     }
 
     nextLevel() {
         this.currentLevel++
-        log(`Level ${this.currentLevel}`)
+        this.addNotification(
+            Notification.Info(
+                [500, 300],
+                `Level ${this.currentLevel} loaded`,
+                4000
+            )
+        )
     }
 
     prevLevel() {

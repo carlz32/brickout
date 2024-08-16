@@ -5,7 +5,7 @@ class GameScene {
         this.paddles = []
         this.balls = []
         this.bricks = []
-        this.messageQueue = []
+        this.notifications = []
     }
 
     registerActions(game) {
@@ -27,8 +27,9 @@ class GameScene {
             if (brick.isAlive()) this.game.drawElement(brick)
         }
 
-        for (let message of this.messageQueue) {
-            this.game.drawText(message)
+        for (let message of this.notifications) {
+            // TODO: draw background before text
+            if (message) this.game.drawText(message)
         }
 
         if (this.game.debug) {
@@ -38,6 +39,10 @@ class GameScene {
 
     addBrick(element) {
         this.bricks.push(element)
+    }
+
+    removeBricks() {
+        this.bricks = []
     }
 
     addPaddle(element) {
@@ -52,8 +57,19 @@ class GameScene {
         this.balls.splice(index, 1)
     }
 
-    removeBricks() {
-        this.bricks = []
+    addNotification(message) {
+        log(message)
+        const { id, duration, ...config } = message
+        log('add Message')
+        this.notifications[id] = config
+        if (duration) {
+            setTimeout(() => this.removeNotification(id), duration)
+        }
+        log('queue', this.notifications)
+    }
+
+    removeNotification(id) {
+        this.notifications[id] = null
     }
 
     update() {}
