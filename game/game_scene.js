@@ -15,19 +15,19 @@ class GameScene {
     }
 
     draw() {
-        for (let paddle of this.paddles) {
+        for (const paddle of this.paddles) {
             this.game.drawElement(paddle)
         }
 
-        for (let ball of this.balls) {
+        for (const ball of this.balls) {
             this.game.drawElement(ball)
         }
 
-        for (let brick of this.bricks) {
+        for (const brick of this.bricks) {
             if (brick.isAlive()) this.game.drawElement(brick)
         }
 
-        for (let message of this.notifications) {
+        for (const message of this.notifications) {
             // TODO: draw background before text
             if (message) this.game.drawText(message)
         }
