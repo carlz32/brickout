@@ -23,12 +23,12 @@ Destory the bricks
       - [x] pause option
       - [x] draw box vertices
     - [x] notify
-      - [x] display information/message on canvas for certain period of time
+      - [x] display information/message on canvas for a certain period of time
 - scene folder
   - manage different game scenes
 - collision detection
   - [x] AABB
-  - [x] createBoxVertices
+    - [x] createBoxVertices
   - [x] SAT
 - vector2D math
   - add/subtract
