@@ -70,7 +70,7 @@ class SceneMain extends GameScene {
     }
 
     allBricksOut() {
-        for (let brick of this.bricks) {
+        for (const brick of this.bricks) {
             if (brick.isAlive()) return false
         }
         return true

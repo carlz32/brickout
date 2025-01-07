@@ -4,7 +4,7 @@ class Notification {
 
     static Info(position, message, duration) {
         const config = {
-            id: this.id++,
+            // id: Notification.id++,
             x: position[0],
             y: position[1],
             color: 'blue',

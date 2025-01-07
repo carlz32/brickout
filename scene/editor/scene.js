@@ -67,11 +67,11 @@ class SceneEditor extends GameScene {
     }
 
     generateLevelData() {
-        if (this.bricks.length == 0) {
+        if (this.bricks.length === 0) {
             throw 'Nothing to save'
         }
 
-        let level = []
+        const level = []
         for (const brick of this.bricks) {
             const { x, y, lifes } = brick
             level.push([x, y, lifes])
@@ -84,7 +84,7 @@ class SceneEditor extends GameScene {
     }
 
     addCurrentLevel(level) {
-        let index = this.currentLevel - 1
+        const index = this.currentLevel - 1
         if (!this.levels[index]) {
             this.levels[index] = []
             this.levels[index].push(...level)
